@@ -1,0 +1,36 @@
+#reset-password-button{
+ 	color: #808080;
+    text-decoration: none!important;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.item-content{
+	display: inline-flex;
+  flex-direction: row;
+}
+
+#text{
+  height: 50%;
+  align-self:center;
+}
+
+.list-item {
+    position: relative;
+    display: flex;
+    color: #f0f0f0;
+    text-decoration: none;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0,0,0,.125)!important;
+    cursor: pointer;
+}
+
+.sub-text{
+    padding-left: 0!important;
+}
+
+#tosLink{
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -1,0 +1,70 @@
+.form-check-input:checked {
+    background-color: black!important;
+    border-color: black!important;
+    box-shadow: 0 0 0 white!important;
+}
+
+.form-check{
+	width: 100%;
+	padding-right:20%;
+	flex-direction: row;
+	padding-left: 0!important;
+	padding-bottom: 3%;
+}
+
+.box-shadow{
+	box-shadow: 0 0 8px 3px lightgray;
+}
+
+.select-box{
+	border-radius: 3px;
+	padding: 3%;
+	padding-right: 4%;
+	margin-bottom: 4%;
+	display: flex;
+	width: 100%;
+    color: #212529;
+    text-decoration: none;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+#body{
+	position: relative!important;
+}
+
+.btn-dark{
+	width: 90%!important;
+}
+
+
+.radio-button {
+	height: 10vh;
+	width: 12.5%;
+	display: flex;
+	justify-content: left;
+	align-items: center; 
+}
+
+.form-check-input {
+}
+
+#contactOptions {
+	margin: 0!important;
+	padding: 0!important;
+	margin-left: -3%!important;
+	margin-right: -3%!important;
+}
+
+#buttonTwo {
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+#main-text{
+	padding-left: 5%;
+}
+
+#select-box-title{
+	font-weight: 200;
+}  

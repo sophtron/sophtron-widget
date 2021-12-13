@@ -1,0 +1,151 @@
+@media only screen and (max-width: 360px) {
+	#container {
+		  height: 100vh;
+		  margin: auto;
+	  }	
+}
+
+@media only screen and (min-width: 361px) {
+	#second-body {
+		display: flex;
+		align-items: center;
+		height: 100vh;
+		justify-content: center;
+		background-color: rgb(32, 33, 36);
+
+	}
+}
+#container {
+	height: 608px;
+	width: 360px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
+	display: flex;
+	flex-direction: column;
+}
+#header {
+	border-radius: 8px;
+	width: 100%;
+	background-color: white;
+	display: flex;
+	flex-direction: row;
+	height: 10%;
+	padding-top: 2.5%;
+	padding-right: 5%;
+	padding-left: 5%;
+	padding-bottom: 8%;
+	justify-content: space-between;
+}
+
+#bottomButton {
+    width: 100%!important;
+    font-weight: 400;
+    font-size: 18px!important;
+}  
+
+#bottomButtonOuter{
+    padding-bottom: 5%!important;
+    padding-top: 0!important;
+    width:88%;
+    align-self: center;
+    margin-top: auto;
+} 
+
+
+#container2 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width:100%;
+}
+
+#header-placeholder {
+	width: 6%;
+}
+
+#body{
+	padding-left: 6%;
+	padding-right: 6%;
+	margin: auto;
+	width: 100%;
+	height: 89.5%;
+	display: flex;
+	flex-direction: row;
+}
+
+.form-control{
+	border-radius: 2px!important;
+		color: black!important;
+}
+
+.item-name{
+	font-size: 14px;
+	font-weight: 600;
+	color: #464646;
+}
+
+.btn-dark{
+	width: 100%;
+	border-radius: 1.5px!important;
+	padding: 5%!important;
+	text-align:center;
+	background-color: black!important;
+}
+
+input{
+	font-weight: 300!important;
+	color: #000100!important;
+}
+
+.center-text {
+	text-align:center;
+}
+
+.main-text {
+	/*padding-top: 1.5rem;*/
+	padding-bottom: 0!important;
+	font-weight: bold!important; 
+}
+
+.sub-side-text{
+	color: #808080;
+	font-size: 12px;
+}
+
+.sub-text{
+	color: #808080;
+	padding-left: 5%;
+	padding-right: 10%;
+	font-size: 15px;
+	font-weight: 300;
+	overflow-wrap: initial!important;
+}
+
+.bank-img{
+	height: 22%;
+	width: 22%;
+	padding-right: 2.5%;
+}
+
+.bank-logo{
+	margin: auto;
+}
+
+.displayed-bank {
+    position: relative;
+    align-self:center;
+    display: flex;
+    color: #212529;
+    text-decoration: none;
+    background-color: #fff;
+}
+
+.side-text{
+  height: 50%;
+  align-self:center;
+}
+
+ul{
+	overflow-y: scroll;
+}
