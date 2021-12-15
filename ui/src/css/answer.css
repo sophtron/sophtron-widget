@@ -1,12 +1,3 @@
-.displayed-bank {
-    position: relative;
-    align-self:center;
-    display: flex;
-    color: #212529;
-    text-decoration: none;
-    background-color: #fff;
-}
-
 .sub-text{
 	padding-left: 0!important;
 	padding-right: 0!important;

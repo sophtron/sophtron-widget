@@ -37,6 +37,7 @@ export default {
   router,
   methods:{
     goBack(){
+      store.commit('SET_BANK', {});
       this.$router.back();
     }
   },
