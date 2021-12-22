@@ -8,8 +8,7 @@
           <img id="logo" class="center-header-logo" width="30" src="./assets/sophtron_logo.png">
           <img id="logo_text" class="center-header-logo" width="70" src="./assets/sophtron_text.png">
         </div>
-        <img id="x" class="right-header-button" width="23" style="cursor: pointer;display: none;" src="./assets/x.png">
-        <div id="header-placeholder"></div>
+        <img id="x" class="right-header-button" width="23" style="cursor: pointer;" @click="close" src="./assets/x.png">
       </div>
       <div class="displayed-bank" v-if="bank.name">
         <img class="bank-logo" v-bind:src="bank.img || require('@/assets/bank-img.png') "/> 
@@ -39,6 +38,9 @@ export default {
     goBack(){
       store.commit('SET_BANK', {});
       this.$router.back();
+    },
+    close(){
+      store.dispatch('close', this.$route.name);
     }
   },
   data(){
