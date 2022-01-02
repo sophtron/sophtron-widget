@@ -102,8 +102,8 @@ const store = new Vuex.Store({
             }
             if(payload.action === 'Refresh'){
                 if(!payload.userInstitutionId){
-                    console.log('refrsh without userinstitution_id')
-                    commit('SET_ERROR', 'Must provide "userInstitution_id" for "Refresh"')
+                    console.log('error: refresh without userinstitution_id')
+                    commit('SET_ERROR', 'Must provide "userInstitution_id" for action "Refresh"')
                     router.push('/invalidrequest');
                     return;
                 }
