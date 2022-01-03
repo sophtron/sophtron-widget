@@ -6,7 +6,7 @@ import ThirdParty from "@/components/ThirdParty.vue"
 import Login from "@/components/Login.vue"
 import Progress from "@/components/Progress.vue"
 import Success from "@/components/Success.vue"
-import ChoosePhone from "@/components/challenges/ChoosePhone.vue"
+import TokenMethod from "@/components/challenges/TokenMethod.vue"
 import TokenInput from "@/components/challenges/TokenInput.vue"
 import Captcha from "@/components/challenges/Captcha.vue"
 import SecurityQuestion from "@/components/challenges/SecurityQuestion.vue"
@@ -21,87 +21,87 @@ const routes = [
     component: SelectBank,
   },
   {
-    path: "/mock",
+    path: "/:partner/mock",
     name: "Mock",
     component: SelectBank,
   },
   {
-    path: "/thirdparty",
+    path: "/:partner/thirdparty",
     name: "Provider_ThirdParty",
     component: ThirdParty,
   },
   {
-    path: "/demo",
+    path: "/:partner/demo",
     name: "Demo",
     component: SelectBank,
   },
   {
-    path: "/add",
+    path: "/:partner/add",
     name: "Add",
     component: SelectBank,
   },
   {
-    path: "/refresh",
+    path: "/:partner/refresh",
     name: "Refresh",
     component: SelectBank,
   },
   {
-    path: "/verify",
+    path: "/:partner/verify",
     name: "Verify",
     component: SelectBank,
   },
   {
-    path: "/util",
+    path: "/:partner/util",
     name: "Util",
     component: SelectBank,
   },
   {
-    path: "/bankauth",
+    path: "/:partner/bankauth",
     name: "Auth",
     component: SelectBank,
   },
   {
-    path: "/success",
+    path: "/:partner/success",
     name: "Success",
     component: Success,
   },
   {
-    path: "/login",
+    path: "/:partner/login",
     name: "Login",
     component: Login,
   },
   {
-    path: "/progress",
+    path: "/:partner/progress",
     name: "In progress",
     component: Progress,
   },
   {
-    path: "/choosePhone",
-    name: "ChoosePhone",
-    component: ChoosePhone,
+    path: "/:partner/tokenmethod",
+    name: "TokenMethod",
+    component: TokenMethod,
   },
   {
-    path: "/captcha",
+    path: "/:partner/captcha",
     name: "Captcha",
     component: Captcha,
   },
   {
-    path: "/tokenInput",
+    path: "/:partner/tokenInput",
     name: "TokenInput",
     component: TokenInput,
   },
   {
-    path: "/securityQuestion",
+    path: "/:partner/securityQuestion",
     name: "SecurityQuestion",
     component: SecurityQuestion,
   },
   {
-    path: "/error",
+    path: "/:partner/error",
     name: "Error",
     component: ErrorPage,
   },
   {
-    path: "/invalidrequest",
+    path: "/:partner/invalidrequest",
     name: "InvalidRequest",
     component: InvalidRequest,
   },
@@ -120,7 +120,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     switch(to.name){
         case 'Home':
-            next({ name: 'Demo', query: to.query });
+            next({ name: 'Demo', query: to.query, params: {partner: 'default'} });
             break;
         case 'Mock':
         case 'Demo':
@@ -144,9 +144,10 @@ router.beforeEach((to, from, next) => {
               integrationKey: query.integration_key,
               providerToken: query.provider_token,
               providerName: query.provider_name,
-              action: to.name
+              action: to.name,
+              partner: to.params.partner
             };
-            //console.log(request);
+            console.log(request);
             store.dispatch('SetRequest', request);
             next();
             break;

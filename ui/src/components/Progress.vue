@@ -9,11 +9,12 @@
 
 <script>
     import Fish from './fish.vue'
+    import store from '@/store'
     export default {
         data () {
             return {
                 //Set to false to disable fishing game
-                enabledFishing: true,
+                enabledFishing: store.state.preference.fish,
             }
         },
         name: 'Progress',

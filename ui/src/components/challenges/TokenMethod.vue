@@ -23,7 +23,7 @@
 import store from '@/store'
 import api from '@/api'
 export default {
-  name: 'ChoosePhone',
+  name: 'TokenMethod',
   methods: {
       submit(){
         api.tokenMethod(this.selected)

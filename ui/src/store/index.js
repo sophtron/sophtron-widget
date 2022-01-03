@@ -3,6 +3,14 @@ import router from '@/router'
 import api from '../api'
 import broker from '../utils/broker'
 
+var partner;
+function pushRoute(path){
+    if(partner){
+        path = '/' + partner + path;
+    }
+    router.push(path);
+}
+
 const store = new Vuex.Store({
     state: {
         defaultBanks: [],
@@ -12,38 +20,60 @@ const store = new Vuex.Store({
         mfa: {},
         request: {},
         provider: {},
+        preference: {},
         error: ''
     },
     mutations: {
         SET_BANKS(state, banks) {
+            //broker.postMessage({step: 'Search'});
             state.banks = banks
         },
         SET_DEFAULTBANKS(state, banks) {
+            //broker.postMessage({step: 'Loaded'});
             state.defaultBanks = banks
         },
+        SET_PREFERENCE(state, preference) {
+            state.preference = preference || {}
+        },
         SET_BANK(state, bank) {
+            broker.postMessage({step: 'SelectBank', });
             state.bank = bank
         },
         SET_JOB(state, job){
+            if(job && job.JobID){
+                broker.postMessage({step: 'Login'});
+            }
             state.job = job
         },
         SET_PROVIDER(state, provider){
+            broker.postMessage({step: 'Provider', provider});
             state.provider = provider
         },
         SET_MFA(state, mfa){
+            if(mfa.Step){
+                var message = {
+                    step: mfa.Step,
+                    accounts: mfa.accounts,
+                    userInstitutionId: mfa.UserInstitutionId
+                }
+                broker.postMessage(message);
+            }
             state.mfa = mfa
         },
         SET_REQUEST(state, request){
+            broker.postMessage({step: 'Init'});
+            partner = request.partner;
             state.request = request
         },
         SET_ERROR(state, error){
+            broker.postMessage({error});
             state.error = error
         }
     },
     actions: {
         SetError ({ commit }, payload) {
             commit('SET_ERROR', payload)
-            router.push('/error')
+            pushRoute('/error')
         },
         SetBank ({ commit }, payload) {
             commit('SET_BANK', payload)
@@ -53,12 +83,11 @@ const store = new Vuex.Store({
                         this.dispatch('SetProvider', data.provider)
                     }else if(data.id){
                         commit('SET_BANK', data);
-                        broker.postMessage({step: 'selectBank'});
-                        router.push('/login');
+                        pushRoute('/login');
                     }
                 });
             }else{
-                router.push('/error');
+                pushRoute('/error');
             }
         },
         SetBanks ({ commit }, payload) {
@@ -75,22 +104,21 @@ const store = new Vuex.Store({
             }
             commit('SET_PROVIDER', payload);
             if(payload.name){
-                router.push({name: 'Provider_' + payload.name});
+                pushRoute({name: 'Provider_' + payload.name});
             }else{
-                router.push('/login');
+                pushRoute('/login');
             }
         },
         SetJob ({ commit, dispatch }, payload) {
-            if(payload.error){
+            if(payload && payload.error){
                 dispatch('SetError', payload.error);
                 return;
             }
             commit('SET_JOB', payload)
             if(payload && payload.JobID){
-                broker.postMessage({step: 'login'});
                 dispatch('SetMfa', {});
             }else{
-                router.push('/error')
+                pushRoute('/error')
             }
         },
         SetRequest ({commit, dispatch}, payload){
@@ -98,7 +126,7 @@ const store = new Vuex.Store({
             if(payload.action.indexOf('Demo') == -1 && payload.action.indexOf('Mock') == -1){
                 if((payload.requestId || '') == '' || (payload.integrationKey || '') == ''){
                     commit('SET_ERROR', 'Mssing request_id or integration_key')
-                    router.push('/invalidrequest');
+                    pushRoute('/invalidrequest');
                     return;
                 }
             }
@@ -106,13 +134,14 @@ const store = new Vuex.Store({
                 if(!payload.userInstitutionId){
                     console.log('error: refresh without userinstitution_id')
                     commit('SET_ERROR', 'Must provide "userInstitution_id" for action "Refresh"')
-                    router.push('/invalidrequest');
+                    pushRoute('/invalidrequest');
                     return;
                 }
             }
             var request = store.state.request;
             api.banks(request)
                 .then(data => {
+                    commit('SET_PREFERENCE', data.preference)
                     var banks = data.banks;
                     if(data.provider){
                         dispatch('SetProvider', data.provider)
@@ -125,43 +154,50 @@ const store = new Vuex.Store({
         },
         SetMfa ({ commit, dispatch, state }, data) {
             let wait = false;
-            if(data.error){
+            if(data.Error){
                 dispatch('SetError', data.error);
                 return;
             }
-            if(data.SuccessFlag == 'Success'){
-                broker.postMessage({ step: 'finish', success: true });
-                router.push('/success')
-            }else if(data.SuccessFlag == 'Failed'){
-                broker.postMessage({ step: 'finish', success: false });
-                router.push('/error')
-            }else if((data.SecurityQuestion || '').length > 0){
-                data.SecurityQuestion = JSON.parse(data.SecurityQuestion);
-                broker.postMessage({ step: 'securityQuestion' });
-                router.push('/securityquestion')
-            }else if((data.TokenMethod || '').length > 0){
-                data.TokenMethod = JSON.parse(data.TokenMethod)
-                broker.postMessage({ step: 'choosePhone' });
-                router.push('/choosephone')
-            }else if(data.TokenRead){
-                broker.postMessage({ step: 'tokenRead' });
-                router.push('/tokenRead')
-            }else if(data.CaptchaImage){
-                broker.postMessage({ step: 'captcha' });
-                router.push('/captcha')
-            }else if(data.TokenSentFlag){
-                broker.postMessage({ step: 'tokenInput' });
-                router.push('/tokeninput')
-            }else{
-                wait = true;
+            switch(data.Step){
+                case 'Success':
+                    if(state.preference.closeOnSuccess){
+                        broker.postAction({action: 'close', reason: 'success'})
+                    }
+                    pushRoute('/success')
+                    break;
+                case 'Failure':
+                    if(state.preference.closeOnError){
+                        broker.postAction({action: 'close', reason: 'error'})
+                    }
+                    pushRoute('/error')
+                    break;
+                case 'SecurityQuestion':
+                    data.SecurityQuestion = JSON.parse(data.SecurityQuestionJson);
+                    pushRoute('/securityquestion')
+                    break;
+                case 'TokenMethod':
+                    data.TokenMethod = JSON.parse(data.TokenMethodJson)
+                    pushRoute('/tokenMethod')
+                    break;
+                case 'TokenRead':
+                    pushRoute('/tokenRead')
+                    break;
+                case 'CaptchaImage':
+                    pushRoute('/captcha')
+                    break;
+                case 'TokenSent':
+                    pushRoute('/tokeninput')
+                    break;
+                default:
+                    wait = true;
             }
             commit('SET_MFA', data)
             if(wait){
-                router.push('/progress/')
+                pushRoute('/progress/')
                 setTimeout(() => {
                     api.mfa(state.job.JobID)
                         .then(data => {
-                            store.dispatch('SetMfa', data)
+                            dispatch('SetMfa', data)
                         });
                 }, 3000)
             }
@@ -181,7 +217,7 @@ const store = new Vuex.Store({
                     break;
             }
             console.log(`Raising close widget event from : ${routeName}`);
-            broker.postAction({action: 'close'});
+            broker.postAction({action: 'close', reason: 'user'});
         }
     }
 })
