@@ -16,7 +16,7 @@
 import store from '@/store'
 import api from '@/api'
 export default {
-  name: 'TokenInput',
+  name: 'SecurityQuestion',
   components: {
   },
   setup(){

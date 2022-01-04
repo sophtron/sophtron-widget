@@ -55,7 +55,7 @@ export default {
     },
     canGoBack(){
       var route = useRoute();
-      return route.name == 'Login';
+      return route.name == 'Login' && !store.state.request.userInstitutionId && !store.state.request.institutionId && !store.state.request.routingNumber;
     }
   },
   mounted(){

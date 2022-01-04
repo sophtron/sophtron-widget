@@ -10,7 +10,7 @@
 
 <script>
 import store from '@/store'
-import http from '@/api'
+import api from '@/api'
 export default {
   name: 'TokenRead',
   components: {

@@ -1,19 +1,19 @@
 <template>
     <div id="container2">
-        <h4 class="main-text">All Done </h4>
+        <h4 class="sub-text">Connection successfull.</h4>
+        <div id="bottomButtonOuter">
+            <button class="btn btn-dark" id="bottomButton" @click="close">Close</button>
+        </div>
     </div>
 </template>
 
 <script>
 import store from '@/store'
 export default {
-  name: 'SecurityQuestion',
+  name: 'Success',
   methods: {
-      submit(){
-
-      },
-      init(){
-
+      close(){
+        store.dispatch('close', this.$route.name);
       }
   },
   data(){

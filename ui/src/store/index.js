@@ -53,8 +53,8 @@ const store = new Vuex.Store({
             if(mfa.Step){
                 var message = {
                     step: mfa.Step,
-                    accounts: mfa.accounts,
-                    userInstitutionId: mfa.UserInstitutionId
+                    accounts: mfa.Accounts,
+                    userInstitutionId: mfa.UserInstitutionID
                 }
                 broker.postMessage(message);
             }
@@ -66,8 +66,13 @@ const store = new Vuex.Store({
             state.request = request
         },
         SET_ERROR(state, error){
-            broker.postMessage({error});
-            state.error = error
+            if(error && error.Code){
+                broker.postMessage({error: error.Code});
+                state.error = error.Message
+            }else{
+                broker.postMessage({error});
+                state.error = error
+            }
         }
     },
     actions: {
@@ -154,8 +159,8 @@ const store = new Vuex.Store({
         },
         SetMfa ({ commit, dispatch, state }, data) {
             let wait = false;
-            if(data.Error){
-                dispatch('SetError', data.error);
+            if(!data || data.Error || data.error){
+                dispatch('SetError', (data || {}).Error || (data || {}).error);
                 return;
             }
             switch(data.Step){
@@ -199,7 +204,7 @@ const store = new Vuex.Store({
                         .then(data => {
                             dispatch('SetMfa', data)
                         });
-                }, 3000)
+                }, window.mock ? 1000 : 3000)
             }
         },
         close(state, routeName){
