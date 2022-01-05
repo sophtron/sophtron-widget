@@ -70,8 +70,8 @@ const store = new Vuex.Store({
                 broker.postMessage({error: error.Code});
                 state.error = error.Message
             }else{
-                broker.postMessage({error});
-                state.error = error
+                broker.postMessage({error: (error || {}).message || error});
+                state.error = (error || {}).message || error
             }
         }
     },
