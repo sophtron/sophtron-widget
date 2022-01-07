@@ -147,7 +147,6 @@ router.beforeEach((to, from, next) => {
               action: to.name,
               partner: to.params.partner
             };
-            console.log(request);
             store.dispatch('SetRequest', request);
             next();
             break;

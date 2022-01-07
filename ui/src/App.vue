@@ -64,7 +64,6 @@ export default {
   },
   data(){
     return {
-      showLogo: store.state.preference.showProviderLogo,
     }
   },
   computed : {
@@ -79,7 +78,10 @@ export default {
     },
     showCloseConfirmation(){
       return store.state.closing;
-    } 
+    },
+    showLogo(){
+       return store.state.preference.showProviderLogo;
+    }
   },
   mounted(){
     // let vwc = document.getElementById("container").clientWidth

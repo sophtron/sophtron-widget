@@ -20,6 +20,7 @@ export default {
     '/api/mfa': () => mfaRes[(counter++) % (mfaRes.length)],
     '/api/banks': () => ({
         //provider: {name: 'ThirdParty', token: 'token'},
+        preference: {showProviderLogo: true},
         meta: '',
         banks: [
             {name: 'Ally Bank', institutionName: 'AllyBank', url: 'https://www.ally.com', img:'https://sophtron.com/images/banklogos/ally%20bank.png' },
