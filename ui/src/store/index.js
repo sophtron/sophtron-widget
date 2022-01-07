@@ -21,7 +21,8 @@ const store = new Vuex.Store({
         request: {},
         provider: {},
         preference: {},
-        error: ''
+        closing: false,
+        error: '',
     },
     mutations: {
         SET_BANKS(state, banks) {
@@ -41,7 +42,7 @@ const store = new Vuex.Store({
         },
         SET_JOB(state, job){
             if(job && job.JobID){
-                broker.postMessage({step: 'Login'});
+                broker.postMessage({step: 'Login', JobID: job.JobID});
             }
             state.job = job
         },
@@ -64,6 +65,9 @@ const store = new Vuex.Store({
             broker.postMessage({step: 'Init'});
             partner = request.partner;
             state.request = request
+        },
+        SET_CLOSING(state, value){
+            state.closing = value;
         },
         SET_ERROR(state, error){
             if(error && error.Code){
@@ -207,22 +211,27 @@ const store = new Vuex.Store({
                 }, window.mock ? 1000 : 3000)
             }
         },
-        close(state, routeName){
-            switch(routeName){
+        close({ commit }, {route, confirmed} ){
+            switch(route){
                 case "In progress":
                 case "ChoosePhone":
                 case "Captcha":
                 case "TokenInput":
+                case "TokenMethod":
                 case "SecurityQuestion":
-                    if(!confirm('Login process in progress, sure to cancel?')){
+                    if(!confirmed){
+                        commit('SET_CLOSING', true);
                         return;
                     }
                     break;
                 default:
                     break;
             }
-            console.log(`Raising close widget event from : ${routeName}`);
+            console.log(`Raising close widget event from : ${route}`);
             broker.postAction({action: 'close', reason: 'user'});
+        },
+        cancelClose({commit}){
+            commit('SET_CLOSING', false);
         }
     }
 })

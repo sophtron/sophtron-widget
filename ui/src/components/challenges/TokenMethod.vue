@@ -8,7 +8,7 @@
                   <input class="form-check-input" type="radio" :value="number" v-model="selected" name="phoneNumberRadio">
               </div>
                 <div class="side-text">
-                    <div id="select-box-title">{{ number }}</div>
+                    <div id="select-box-title" @click="select(number)">{{ number }}</div>
                     <!-- <div class="sub-side-text phone-number"> {{ number }}</div> -->
               </div>
           </li>
@@ -32,6 +32,9 @@ export default {
                     store.dispatch('SetMfa', {});
                 }
             });
+      },
+      select(number){
+        this.selected = number;
       }
   },
   components: {

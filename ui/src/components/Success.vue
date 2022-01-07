@@ -13,7 +13,7 @@ export default {
   name: 'Success',
   methods: {
       close(){
-        store.dispatch('close', this.$route.name);
+        store.dispatch('close', {route: this.$route.name});
       }
   },
   data(){

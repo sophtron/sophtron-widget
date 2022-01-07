@@ -5,8 +5,8 @@
         <img id="arrow" class="left-header-button" width="23" style="cursor: pointer;" @click="goBack" v-if="canGoBack" src="./assets/arrow.png">
         <div id="header-placeholder" v-else></div>
         <div>
-          <img id="logo" class="center-header-logo" width="30" src="./assets/sophtron_logo.png">
-          <img id="logo_text" class="center-header-logo" width="70" src="./assets/sophtron_text.png">
+          <img id="logo" class="center-header-logo" width="30" v-show="showLogo" src="./assets/sophtron_logo.png">
+          <img id="logo_text" class="center-header-logo" width="70" v-show="showLogo" src="./assets/sophtron_text.png">
         </div>
         <img id="x" class="right-header-button" width="23" style="cursor: pointer;" @click="close" src="./assets/x.png">
       </div>
@@ -20,31 +20,51 @@
       <div id="body">
         <router-view />
       </div>
+
+      <div class="modal-mask" v-if="showCloseConfirmation">
+        <div class="modal-container">
+          <div class="modal-content">
+            <p class="sub-text">Login in progress, are you sure to close?</p>
+          </div>
+          <div class="modal-buttons-container">
+            <button class="btn modal-button" @click="confirmClose">Yes</button>
+            <button class="btn modal-button" @click="cancelClose">Cancel</button>
+          </div>
+        </div>
+      </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import store from '@/store'
 import {useRoute} from  'vue-router'
-import router from '@/router'
+//import router from '@/router'
 export default {
   name: 'App',
   components: {
   },
-  store,
-  router,
+  // store,
+  // router,
   methods:{
     goBack(){
       store.commit('SET_BANK', {});
       this.$router.back();
     },
     close(){
-      store.dispatch('close', this.$route.name);
+      store.dispatch('close', {route: this.$route.name});
+    },
+    confirmClose(){
+      store.dispatch('close', {route: this.$route.name, confirmed: true});
+    },
+    cancelClose(){
+      store.dispatch('cancelClose', {route: this.$route.name});
     }
   },
   data(){
     return {
+      showLogo: store.state.preference.showProviderLogo,
     }
   },
   computed : {
@@ -56,7 +76,10 @@ export default {
     canGoBack(){
       var route = useRoute();
       return route.name == 'Login' && !store.state.request.userInstitutionId && !store.state.request.institutionId && !store.state.request.routingNumber;
-    }
+    },
+    showCloseConfirmation(){
+      return store.state.closing;
+    } 
   },
   mounted(){
     // let vwc = document.getElementById("container").clientWidth
@@ -78,4 +101,5 @@ export default {
 
 <style>
   @import './css/universal.css';
+  @import './css/modal.css';
 </style>

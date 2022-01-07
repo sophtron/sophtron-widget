@@ -23,6 +23,7 @@
 	box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%);
 	display: flex;
 	flex-direction: column;
+	position: relative;
 }
 #header {
 	border-radius: 8px;
