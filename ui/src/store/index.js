@@ -51,9 +51,11 @@ const store = new Vuex.Store({
             state.provider = provider
         },
         SET_MFA(state, mfa){
-            if(mfa.Step){
+            if(mfa.Step && state.mfa.Step !== mfa.Step){
                 var message = {
                     step: mfa.Step,
+                    status: mfa.LastStatus,
+                    jobId: mfa.JobID,
                     accounts: mfa.Accounts,
                     userInstitutionId: mfa.UserInstitutionID
                 }
@@ -197,8 +199,10 @@ const store = new Vuex.Store({
                 case 'TokenSent':
                     pushRoute('/tokeninput')
                     break;
+                case 'LoginSuccess':
                 default:
                     wait = true;
+                    break;
             }
             commit('SET_MFA', data)
             if(wait){

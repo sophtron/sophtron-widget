@@ -21,6 +21,11 @@ const routes = [
     component: SelectBank,
   },
   {
+    path: "/demo",
+    name: "QuickDemo",
+    component: SelectBank,
+  },
+  {
     path: "/:partner/mock",
     name: "Mock",
     component: SelectBank,
@@ -120,6 +125,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     switch(to.name){
         case 'Home':
+        case 'QuickDemo':
             next({ name: 'Demo', query: to.query, params: {partner: 'default'} });
             break;
         case 'Mock':
