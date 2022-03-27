@@ -26,6 +26,11 @@ const routes = [
     component: SelectBank,
   },
   {
+    path: "/mock",
+    name: "QuickMock",
+    component: SelectBank,
+  },
+  {
     path: "/:partner/mock",
     name: "Mock",
     component: SelectBank,
@@ -61,8 +66,18 @@ const routes = [
     component: SelectBank,
   },
   {
-    path: "/:partner/bankauth",
+    path: "/:partner/utils",
+    name: "Utils",
+    component: SelectBank,
+  },
+  {
+    path: "/:partner/auth",
     name: "Auth",
+    component: SelectBank,
+  },
+  {
+    path: "/:partner/bankauth",
+    name: "BankAuth",
     component: SelectBank,
   },
   {
@@ -128,14 +143,19 @@ router.beforeEach((to, from, next) => {
         case 'QuickDemo':
             next({ name: 'Demo', query: to.query, params: {partner: 'default'} });
             break;
+        case 'QuickMock':
+            next({ name: 'Mock', query: to.query, params: {partner: 'default'} });
+            break;
         case 'Mock':
         case 'Demo':
         case 'ProviderDemo':
         case 'Add':
         case 'Auth':
+        case 'BankAuth':
         case 'Refresh':
         case 'Verify':
         case 'Util':
+        case 'Utils':
             window.mock = to.name === 'Mock';
             window.noFishing = to.query.nofishing
             var query = {};
