@@ -15,7 +15,7 @@ npm install
 ```
 npm run serve
 ```
-Go to `http://localhost:8081/mock` and start using the mocked flow
+Go to `http://localhost:8081/default/mock` and start using the mocked flow
 [mockData.js](src/utils/mockData.js) provides mock data for customizing display during development
 
 ### Compiles and minifies for production
