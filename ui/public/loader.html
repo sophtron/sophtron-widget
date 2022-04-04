@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Sophtron Widget Loader Example</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+</head>
+  <body style="background:url(/static/bg_loader.jpeg); max-height: 99vh; overflow:hidden;">
+    
+    <script type="text/javascript" src="https://cdn.sophtron.com/sophtron-widget-loader-0.0.0.5.min.js" ></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- <script type="text/javascript" src="/js/sophtron-widget-loader.js" ></script> -->
+    <script type="text/javascript" >
+      var id = '$userInstitution_id';
+      var didDemo = $did_demo;
+      function onEvent(e){
+        console.log(e)
+      }
+      function onFinish(e){
+        id = e.userInstitutionId;
+        showDiDDemo(true)
+      }
+      function showDiDDemo(show){
+        document.getElementById('identity').style.display = show ? 'block': 'none';
+        document.getElementById('banking').style.display = show ? 'block': 'none';
+        if(!show){
+          showJson();
+        }
+      }
+      function showJson(data){
+        if(data && didDemo){
+          document.getElementById('json').style.display = 'block';
+          document.getElementById('json').innerText = JSON.stringify(data, undefined, 2);
+        }else{
+          document.getElementById('json').innerText = '';
+          document.getElementById('json').style.display = 'none';
+        }
+      }
+      function showVC(type){
+        axios.get(`/example/did/vc/${type}/${id}`).then(res => {
+          showJson(res.data);
+        });
+      }
+      function init(action){
+        sophtron.init(action , { 
+            env: 'prod',
+            partner: 'default',
+            integration_key: '$integration_key',
+            request_id: '$request_id',
+            //institution_id: '$institution_id',
+            userInstitution_id: '$userInstitution_id',
+            onShow: onEvent,
+            onInit: onEvent,
+            onClose: onEvent,
+            onSelectBank: onEvent,
+            onLogin: onEvent,
+            onLoginSuccess: onEvent,
+            onMfa: onEvent,
+            onFinish: onFinish,
+            onError: onEvent,
+        }, true );
+      }
+      init('Demo');
+      setTimeout(() => {
+          showJson();
+          // document.getElementById('identity').style.display = 'block';
+          // document.getElementById('banking').style.display = 'block';
+      }, 1000);
+    </script>
+    <div class="container body-content">
+      <div style="padding:50px;">
+        <div style=" margin:auto; padding: 50px; min-height:700px">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-5">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <br />
+                      <br />
+                      <h2>sophtron-widget-loader example</h2>
+                      <br />
+                      <br /> 
+                      <br />
+                      <br />
+                      <br />
+                      <br />
+                      <b>Choose action</b>
+                    </div>
+                  </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                          <select class="form-select" aria-label="Default select example" onchange="init(this.value)">
+                            <option value="Demo">Demo</option>
+                            <option value="Add">Add</option>
+                            <option value="Refresh">Refresh</option>
+                            <option value="BankAuth">BankAuth</option>
+                            <option value="Verify">Verify</option>
+                            <option value="Utils">Utils</option>
+                          </select>
+                          <br />
+                          <button id="start_btn" type="button" class="btn btn-success w-100" onclick="showDiDDemo(false); sophtron.show();">Show</button>
+                          <br/>
+                          
+                        <div class="col-md-8">
+                                
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:20px;">
+                      <div class="col-md-5">
+                        <button id="identity" style="display: none; width: 180px;" type="button" class="btn btn-secondary " onclick="showVC('identity')">Get VC for Identity</button>
+                      </div>
+                      <div class="col-md-2"></div>
+                      <div class="col-md-5">
+                        <button id="banking"  style="display: none; width: 180px" type="button" class="btn btn-secondary" onclick="showVC('banking')">Get VC for Banking</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-6">
+                  <pre id="json" style="max-height: 600px; overflow: scroll; background-color: bisque;" ></pre>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+      <hr />
+      <footer>
+          <p>&copy; 2019 - Sohptron Example</p>
+      </footer>
+  </div>
+  </body>
+ </html>
