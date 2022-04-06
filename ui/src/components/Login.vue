@@ -2,7 +2,7 @@
     <div id="container2">
        
         <h4 class="main-text"> Login to {{bank.name}} <br/> Enter your credentials </h4>
-        <p class="sub-text">By providing your credentials you are asking Alice to retrieve your financial data and agree to our <a id="tosLink" >terms of service</a>.</p>
+        <p class="sub-text">By providing your credentials you are asking Sophtron to retrieve your financial data and agree to our <a id="tosLink" >terms of service</a>.</p>
         <div class="pb-2">
             <input type="username" required class="form-control" v-model="username" placeholder="Username">
         </div>
