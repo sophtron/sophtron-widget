@@ -57,7 +57,8 @@ const store = new Vuex.Store({
                     status: mfa.LastStatus,
                     jobId: mfa.JobID,
                     accounts: mfa.Accounts,
-                    userInstitutionId: mfa.UserInstitutionID
+                    userInstitutionId: mfa.UserInstitutionID,
+                    institutionId: mfa.InstitutionID
                 }
                 broker.postMessage(message);
             }
@@ -168,6 +169,9 @@ const store = new Vuex.Store({
             if(!data || data.Error || data.error){
                 dispatch('SetError', (data || {}).Error || (data || {}).error);
                 return;
+            }
+            if(data.Step === 'LoginSuccess' && state.preference.successWhenAccountsReady){
+                data.Step = 'Success';
             }
             switch(data.Step){
                 case 'Success':

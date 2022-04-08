@@ -49,9 +49,9 @@
                         <img class="cert" src="/static/cert.png"> 
                         <img class="chase" v-bind:src="bankingVc.obj.credentialSubject.institutionImg">
                     </div>
-                    <p style="font-weight: bold; margin-top: 2%;margin-bottom: 1%!important">Account Number:{{ bankingVc.obj.credentialSubject.accounts[0].accountNumber}}</p>
-                    <p style="margin-bottom: 1%!important">Routing Number: {{ bankingVc.obj.credentialSubject.accounts[0].routingNumber}}</p>
-                    <p>Balance: ${{ bankingVc.obj.credentialSubject.accounts[0].availableBalnace }}</p>
+                    <p style="font-weight: bold; margin-top: 2%;margin-bottom: 1%!important">Account Number:{{ bankingVcLatestAccount.accountNumber}}</p>
+                    <p style="margin-bottom: 1%!important">Routing Number: {{ bankingVcLatestAccount.routingNumber}}</p>
+                    <p>Balance: ${{ bankingVcLatestAccount.availableBalnace }}</p>
                     <p style="margin-bottom: 1%!important">Verified credental issued by: <span style="font-weight: bold;"> Sophtron, Inc.</span></p>
                     <p>Issued: {{ new Date(bankingVc.obj.issuanceDate) }}</p>
                     <div class="image-container2">
@@ -103,6 +103,11 @@
                 },
                 bankingVcJson(){
                     return JSON.stringify(this.bankingVc.obj, null, 2)
+                },
+                bankingVcLatestAccount(){
+                    return this.bankingVc.obj.credentialSubject.accounts.sort(function(a,b){
+                        return b.availableBalnace - a.availableBalnace;
+                    })[0];
                 }
             },
             methods: {
@@ -116,7 +121,7 @@
                             userInstitution_id: this.uid,
                             onShow: onEvent,
                             onInit: onEvent,
-                            onClose: onFinish,
+                            onClose: onEvent,
                             onSelectBank: onEvent,
                             onLogin: onEvent,
                             onLoginSuccess: onEvent,
@@ -146,21 +151,23 @@
                     });
                 },
                 onPaymentFinish(e){
-                    this.uid = e.UserInstitutionID || initial_uid;
-                    this.iid = e.InstitutionID || this.iid;
+                    console.log(e);
+                    this.uid = e.userInstitutionId || this.uid;
+                    this.iid = e.institutionId || this.iid;
                     this.paymentFinished = true;
                 },
                 onBankingFinish(e){
-                    this.uid = e.UserInstitutionID || initial_uid;
-                    this.iid = e.InstitutionID || this.iid;
+                    console.log(e);
+                    this.uid = e.userInstitutionId || this.uid;
+                    this.iid = e.institutionId || this.iid;
                     this.bankingFinished = true;
                 },
                 connectForPayment(){
-                    this.initWidget(this.onPaymentFinish, 'Add');
+                    this.initWidget(this.onPaymentFinish, 'BankAuth');
                     sophtron.show();
                 },
                 connectForBanking(){
-                    this.initWidget(this.onBankingFinish, 'BankAuth');
+                    this.initWidget(this.onBankingFinish, 'Add');
                     sophtron.show();
                 }
             }
