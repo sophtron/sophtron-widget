@@ -139,13 +139,13 @@
                     this.paymentVc.detail = !this.paymentVc.detail;
                 },
                 showBankingVc(){
-                    axios.get(`/example/did/vc/banking/${this.iid}/${this.uid}`).then(res => {
+                    axios.get(`/example/did/vc/banking/${this.uid}`).then(res => {
                         this.bankingVc.show = true;
                         this.bankingVc.obj = res.data;
                     });
                 },
                 showPaymentVc(){
-                    axios.get(`/example/did/vc/identity/${this.iid}/${this.uid}`).then(res => {
+                    axios.get(`/example/did/vc/identity/${this.uid}`).then(res => {
                         this.paymentVc.show = true;
                         this.paymentVc.obj = res.data;
                     });
