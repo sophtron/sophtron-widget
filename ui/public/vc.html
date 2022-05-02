@@ -23,11 +23,11 @@
                     <p style="margin-left:auto; margin-right: auto;font-weight: bold;">Payment Credential</p>
                     <div class="image-container">
                         <img class="cert" src="/static/cert.png"> 
-                        <img class="chase" v-bind:src="paymentVc.obj.credentialSubject.institutionImg">
+                        <img class="chase" v-bind:src="paymentVc.obj.credentialSubject.fiAttributes[1].value">
                     </div>
-                    <p style="font-weight: bold; margin-top: 2%;margin-bottom: 1%!important">{{ paymentVc.obj.credentialSubject.name}}</p>
-                    <p style="margin-bottom: 1%!important">{{ paymentVc.obj.credentialSubject.email}}</p>
-                    <p>{{ paymentVc.obj.credentialSubject.address }}</p>
+                    <p style="font-weight: bold; margin-top: 2%;margin-bottom: 1%!important">{{ identityName }}</p>
+                    <p style="margin-bottom: 1%!important">{{ identityEmail}}</p>
+                    <p>{{ identityAddress }}</p>
                     <p style="margin-bottom: 1%!important">Verified credental issued by: <span style="font-weight: bold;"> Sophtron, Inc.</span></p>
                     <p>Issued: {{ new Date(paymentVc.obj.issuanceDate) }}</p>
                     <div class="image-container2">
@@ -47,10 +47,10 @@
                     <p style="margin-left:auto; margin-right: auto;font-weight: bold;">Bank Account Credential</p>
                     <div class="image-container">
                         <img class="cert" src="/static/cert.png"> 
-                        <img class="chase" v-bind:src="bankingVc.obj.credentialSubject.institutionImg">
+                        <img class="chase" v-bind:src="bankingVc.obj.credentialSubject.fiAttributes[1].value">
                     </div>
                     <p style="font-weight: bold; margin-top: 2%;margin-bottom: 1%!important">Account Number:{{ bankingVcLatestAccount.accountNumber}}</p>
-                    <p style="margin-bottom: 1%!important">Routing Number: {{ bankingVcLatestAccount.routingNumber}}</p>
+                    <p style="margin-bottom: 1%!important">Routing Number: {{ bankingVcLatestAccount.routingTransitNumber}}</p>
                     <p>Balance: ${{ bankingVcLatestAccount.availableBalnace }}</p>
                     <p style="margin-bottom: 1%!important">Verified credental issued by: <span style="font-weight: bold;"> Sophtron, Inc.</span></p>
                     <p>Issued: {{ new Date(bankingVc.obj.issuanceDate) }}</p>
@@ -108,7 +108,38 @@
                     return this.bankingVc.obj.credentialSubject.accounts.sort(function(a,b){
                         return b.availableBalnace - a.availableBalnace;
                     })[0];
-                }
+                },
+                identityName(){
+                    let a = this.paymentVc.obj.credentialSubject.customer.name;
+                    if(a){
+                        return [
+                            a.prefix,
+                            a.first,
+                            a.middle,
+                            a.last,
+                            a.suffix,
+                        ].filter(a => a).join(" ")
+                    }
+                    return ''
+                },
+                identityEmail(){
+                    return (this.paymentVc.obj.credentialSubject.customer.email || []).find(o => true);
+                },
+                identityAddress(){
+                    let a = (this.paymentVc.obj.credentialSubject.customer.addresses || []).find(o => true);
+                    if(a){
+                        return [
+                            a.line1,
+                            a.line2,
+                            a.line3,
+                            a.city,
+                            a.state,
+                            a.country,
+                            a.postalCode,
+                        ].filter(a => a).join(" ")
+                    }
+                    return '';
+                },
             },
             methods: {
                 initWidget(onFinish, action){
