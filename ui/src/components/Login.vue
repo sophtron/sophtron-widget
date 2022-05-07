@@ -1,8 +1,9 @@
 <template>
     <div id="container2">
        
-        <h4 class="main-text"> Login to {{bank.name}} <br/> Enter your credentials </h4>
+        <h4> Login to <b>{{bank.name}}</b> <br/> Enter your credentials </h4>
         <p class="sub-text" v-if="showConsent" >By providing your credentials you are asking {{orgName}} to retrieve your financial data and agree to our <a id="tosLink" :href="termsUrl" target="_blank" >terms of service</a>.</p>
+        <div style="min-height: 75px;" v-if="!showConsent" ></div>
         <div class="pb-2">
             <input type="username" required class="form-control" v-model="username" placeholder="Username">
         </div>
