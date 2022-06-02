@@ -1,7 +1,13 @@
 import axios from 'axios'
 import mockData from './mockData'
+import broker from './broker';
 var prefix = '';
 var meta = ''; // a temporary metadata token for this session
+
+axios.interceptors.response.use(undefined, function (err) {
+    broker.postMessage({error: (err.response || {}).status});
+    return Promise.reject(err);
+})
 
 export default {
     post(url, data){
@@ -23,8 +29,6 @@ export default {
                         meta = res.headers.meta
                     }
                     return res.data
-                }).catch(err => {
-                    console.log(err);
                 });
         }
     }
