@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve --port 8081",
+    "serve": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service serve --port 3000",
     "build": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service build",
     "lint": "NODE_OPTIONS=--openssl-legacy-provider vue-cli-service lint"
   },
