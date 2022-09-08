@@ -1,6 +1,6 @@
 <template>
     <div id="container2">
-        <div class="sub-text">Enter the security code <a class="sub-text phone-number">{{ phoneNumber }}</a></div>
+        <div class="sub-text">Enter the <a class="sub-text phone-number">{{ inputName }}</a></div>
         <div class="pb-3 pt-2">
             <input type="text" class="form-control" v-model="input" placeholder="Code">
         </div>
@@ -25,8 +25,8 @@ export default {
   data(){
       return {
         questions: store.state.mfa.SecurityQuestions,
+        inputName: store.state.mfa.TokenInputName,
         input: '',
-        phoneNumber: ''
       }
   },
   methods: {
