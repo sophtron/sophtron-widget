@@ -194,10 +194,14 @@
                     this.bankingFinished = true;
                 },
                 connectForPayment(){
+                    //CreateUserInstitutionWithFullAccountNumbers
+                    //addallwithauthaccounts
                     this.initWidget(this.onPaymentFinish, 'BankAuth');
                     sophtron.show();
                 },
                 connectForBanking(){
+                    //CreateUserInstitutionWithProfileInfo : transacton + identity
+                    //addallwithauth, auth: mx identity, creatuserinstituwithprofileinfor
                     this.initWidget(this.onBankingFinish, 'Add');
                     sophtron.show();
                 }
