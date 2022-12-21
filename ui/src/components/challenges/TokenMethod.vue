@@ -41,7 +41,6 @@ export default {
   },
   setup(){
     return { 
-        bank: store.state.bank
     }
   },
   mounted(){

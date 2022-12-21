@@ -18,7 +18,7 @@ export default {
   setup(){
     return { 
         bank: store.state.bank,
-        token: store.state.mfa.Token
+        token: store.state.mfa.TokenRead
     }
   },
   data(){

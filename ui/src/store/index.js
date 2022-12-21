@@ -195,12 +195,14 @@ const store = new Vuex.Store({
                     pushRoute('/tokenMethod')
                     break;
                 case 'TokenRead':
+                    data.token = data.TokenRead
                     pushRoute('/tokenRead')
                     break;
                 case 'CaptchaImage':
                     pushRoute('/captcha')
                     break;
                 case 'TokenSent':
+                    data.TokenInputName
                     pushRoute('/tokeninput')
                     break;
                 case 'LoginSuccess':

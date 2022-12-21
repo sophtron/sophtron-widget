@@ -8,6 +8,7 @@ import Progress from "@/components/Progress.vue"
 import Success from "@/components/Success.vue"
 import TokenMethod from "@/components/challenges/TokenMethod.vue"
 import TokenInput from "@/components/challenges/TokenInput.vue"
+import TokenRead from "@/components/challenges/TokenRead.vue"
 import Captcha from "@/components/challenges/Captcha.vue"
 import SecurityQuestion from "@/components/challenges/SecurityQuestion.vue"
 import PageNotFound from "@/components/shared/PageNotFound.vue"
@@ -109,6 +110,11 @@ const routes = [
     path: "/:partner/tokenInput",
     name: "TokenInput",
     component: TokenInput,
+  },
+  {
+    path: "/:partner/tokenRead",
+    name: "TokenRead",
+    component: TokenRead,
   },
   {
     path: "/:partner/securityQuestion",
