@@ -195,6 +195,12 @@ const store = new Vuex.Store({
             }
             switch(data.Step){
                 case 'Success':
+                    console.log("success")
+                    console.log(state.connect)
+
+                    setTimeout(() => {
+                        window.location.replace(state.connect.url + "?code=" + data.UserInstitutionID + "&state=" + state.connect.state)
+                    }, 2000)
                     if(state.preference.closeOnSuccess){
                         broker.postAction({action: 'close', reason: 'success'})
                     }
@@ -226,6 +232,9 @@ const store = new Vuex.Store({
                     pushRoute('/tokeninput')
                     break;
                 case 'LoginSuccess':
+                    console.log("success")
+                    console.log(state)
+                    break
                 default:
                     wait = true;
                     break;
