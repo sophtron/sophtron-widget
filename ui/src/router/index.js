@@ -15,6 +15,7 @@ import PageNotFound from "@/components/shared/PageNotFound.vue"
 import ErrorPage from "@/components/shared/Error.vue"
 import InvalidRequest from "@/components/shared/InvalidRequest.vue"
 import store from "../store"
+//import api from "../api"
 const routes = [
   {
     path: "/",
@@ -43,6 +44,11 @@ const routes = [
   },
   {
     path: "/:partner/demo",
+    name: "Demo",
+    component: SelectBank,
+  },
+  {
+    path: "/:partner/connect",
     name: "Demo",
     component: SelectBank,
   },
@@ -144,6 +150,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  // console.log("From")
+  // console.log(from)
+
+  console.log("To")
+  // console.log(to)
+
     switch(to.name){
         case 'Home':
         case 'QuickDemo':
@@ -160,6 +172,18 @@ router.beforeEach((to, from, next) => {
         case 'BankAuth':
         case 'Refresh':
         case 'Verify':
+        case 'Connect':
+          var req = {
+            institutionId: to.query.provider,
+            taskId:  to.query.state,
+            url: to.query.redirect_url, 
+            action: "Connect",
+            partner: to.params.partner,
+            requestId: "1"
+          }
+          store.dispatch('SetRequest', req);
+          next();
+          break;
         case 'Util':
         case 'Utils':
             window.mock = to.name === 'Mock';
@@ -188,10 +212,12 @@ router.beforeEach((to, from, next) => {
             next();
             break;
         default:
+          console.log(store.state.request.action)
             if(to.name.startsWith('Provider_')){
               next();
             }
             else if(!store.state.bank.name){
+              console.log(store.state.request.action)
               next({ name: store.state.request.action, query: to.query })
             }
             else {

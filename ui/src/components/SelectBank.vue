@@ -19,7 +19,7 @@
 <script>
 import api from '../api'
 import store from '@/store'
-
+console.log("Ao")
 export default {
   name: 'SelectBank',
   methods: {

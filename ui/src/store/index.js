@@ -21,6 +21,7 @@ const store = new Vuex.Store({
         request: {},
         provider: {},
         preference: {},
+        connect: {},
         closing: false,
         error: '',
     },
@@ -65,9 +66,13 @@ const store = new Vuex.Store({
             state.mfa = mfa
         },
         SET_REQUEST(state, request){
+            console.log(request)
             broker.postMessage({step: 'Init'});
             partner = request.partner;
             state.request = request
+        },
+        SET_CONNECT(state, connect) {
+            state.connect = connect
         },
         SET_CLOSING(state, value){
             state.closing = value;
@@ -134,14 +139,15 @@ const store = new Vuex.Store({
             }
         },
         SetRequest ({commit, dispatch}, payload){
+            console.log(payload)
             commit('SET_REQUEST', payload);
-            if(payload.action.indexOf('Demo') == -1 && payload.action.indexOf('Mock') == -1){
-                if((payload.requestId || '') == '' || (payload.integrationKey || '') == ''){
-                    commit('SET_ERROR', 'Mssing request_id or integration_key')
-                    pushRoute('/invalidrequest');
-                    return;
-                }
-            }
+            // if(payload.action.indexOf('Demo') == -1 && payload.action.indexOf('Mock') == -1){
+            //     if((payload.requestId || '') == '' || (payload.integrationKey || '') == ''){
+            //         commit('SET_ERROR', 'Mssing request_id or integration_key')
+            //         pushRoute('/invalidrequest');
+            //         return;
+            //     }
+            // }
             if(payload.action === 'Refresh'){
                 if(!payload.userInstitutionId){
                     console.log('error: refresh without userinstitution_id')
@@ -149,6 +155,20 @@ const store = new Vuex.Store({
                     pushRoute('/invalidrequest');
                     return;
                 }
+            }
+
+            if (payload.action == 'Connect') {
+                api.selectBank({id:payload.institutionId, name:payload.institutionId}).then(data => {
+                    if(data.id){
+                        commit('SET_CONNECT', {state:payload.taskId,url:payload.url})
+                        store.dispatch('SetBank', data);
+                        pushRoute('/login');
+                        return
+                    } else {
+                        pushRoute('/invalidrequest');
+                        return
+                    }
+                });
             }
             var request = store.state.request;
             api.banks(request)
