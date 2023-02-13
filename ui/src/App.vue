@@ -11,7 +11,7 @@
         <img id="x" class="right-header-button" width="23" style="cursor: pointer;" @click="close" src="./assets/x.png">
       </div>
       <div class="displayed-bank" v-if="bank.name">
-        <img class="bank-logo" v-bind:src="bank.img || require('@/assets/bank-img.png') "/> 
+        <img class="bank-logo" v-bind:src="bank.img || require('@/assets/bank-img.png')" width="128"/> 
         <!-- <div class="side-text">
           <div class="item-name"><b>{{ bank.name }}</b></div>
           <div class="sub-side-text">{{ bank.link }}</div>
