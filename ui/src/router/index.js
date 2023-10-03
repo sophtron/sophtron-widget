@@ -62,6 +62,26 @@ const routes = [
     component: SelectBank,
   },
   {
+    path: "/:partner/all",
+    name: "All",
+    component: SelectBank,
+  },
+  {
+    path: "/:partner/everything",
+    name: "Everything",
+    component: SelectBank,
+  },
+  {
+    path: "/:partner/agg",
+    name: "Agg",
+    component: SelectBank,
+  },
+  {
+    path: "/:partner/aggregate",
+    name: "Aggregate",
+    component: SelectBank,
+  },
+  {
     path: "/:partner/util",
     name: "Util",
     component: SelectBank,
@@ -74,6 +94,11 @@ const routes = [
   {
     path: "/:partner/auth",
     name: "Auth",
+    component: SelectBank,
+  },
+  {
+    path: "/:partner/identify",
+    name: "Identify",
     component: SelectBank,
   },
   {
@@ -156,6 +181,10 @@ router.beforeEach((to, from, next) => {
         case 'Demo':
         case 'ProviderDemo':
         case 'Add':
+        case 'All':
+        case 'Everything':
+        case 'Agg':
+        case 'Aggregate':
         case 'Auth':
         case 'BankAuth':
         case 'Refresh':
